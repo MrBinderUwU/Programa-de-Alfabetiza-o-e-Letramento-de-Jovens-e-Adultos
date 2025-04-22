@@ -1,16 +1,61 @@
-import { Text, SafeAreaView, StyleSheet, Image, TextInput, Button} from 'react-native';
+import { Text, SafeAreaView, StyleSheet, Image, TextInput, Button, View} from 'react-native';
+import { React, useEffect } from 'react';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 // You can import supported modules from npm
 import { Card } from 'react-native-paper';
+
+const videoSource = require('./assets/dev999.mp4');
+function VideoDev() {
+  const player = useVideoPlayer(videoSource, player => {
+    player.loop = true;
+
+  });
+
+  useEffect(() => {
+    if (player) {
+      player.play();
+    }
+  }, [player]);
+  
+  return (
+    <View style={styles.videoContainer}>
+      <VideoView style={styles.video} player={player} />
+    </View>
+  );
+}
 
 // or any files within the Snack
 const d = new Date();
 let hour = d.getHours();
 
+const Dev = ({navigation})=>{
+  return(
+    <View>
+      <Text style={styles.paragraph}>
+        Menu Dev Test
+      </Text>
+      <VideoDev/>
+      <Text>{'\n'}</Text>
+      <Button onPress = {()=>navigation.navigate(Login)} title = 'Tela de Login'/>
+      <Button onPress = {()=>navigation.navigate(Home)} title = 'Tela de Home'/>
+      <Button onPress = {()=>navigation.navigate(ADM)} title = 'Tela de ADM'/>
+      <Button onPress = {()=>navigation.navigate(Prof)} title = 'Tela de Professor'/>
+    </View>
+  )}
 
-
-export default function App() {
+const Home = ()=>{return(<Text>Home</Text>)}
+const Prof = ()=>{return(<Text>Prof</Text>)}
+const ADM = ()=>{return(<Text>ADM</Text>)}
+const Login = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.logo} source={require('./assets/logo.png')} />
@@ -83,4 +128,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'center',
   },
+    videoContainer: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 50,
+  },
+    video: {
+    width: 300,
+    height: 150,
+  },
 });
+
+const App = () => {
+  return (
+      <NavigationContainer>		
+        <Stack.Navigator>
+          <Stack.Screen name="Dev" component={Dev} />
+          <Stack.Screen name="Login" component={Login}/>      	
+        </Stack.Navigator>    
+      </NavigationContainer>)
+  };
+  
+export default App
