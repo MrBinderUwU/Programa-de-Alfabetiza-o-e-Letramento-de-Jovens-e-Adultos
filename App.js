@@ -1,6 +1,7 @@
 import { Text, SafeAreaView, StyleSheet, Image, TextInput, Button, View} from 'react-native';
 import { React, useEffect } from 'react';
 import { useVideoPlayer, VideoView } from 'expo-video';
+import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -37,6 +38,28 @@ function VideoDev() {
 const d = new Date();
 let hour = d.getHours();
 
+const optionsProf = [
+  { id: 1, icon:"how-to-reg", option: "Realizar Chamada", screen:"realizar_chamada"},
+  { id: 2, icon:"note-add", option: "Adicionar Conteúdo"},
+  { id: 3, icon:"calendar-month", option: "Criar Turma"},
+  { id: 4, icon:"calendar-month", option: "Criar Aluno"},
+  { id: 5, icon:"person-add", option: "Adicionar Aluno"},
+];
+
+const optionsHome = [
+  { id: 1, icon:"description", option: "Ver Conteúdo"},
+  { id: 2, icon:"calendar-month", option: "Ver Turma"},
+  { id: 3, icon:"send", option: "Enviar Trabalho"},
+  { id: 4, icon:"settings", option: "Configurações", screen:"config"},
+];
+
+const CardOptions = ({ icon, option}) => (
+  <View style={styles.card}>
+    <MaterialIcons name={icon} size={24}/>
+    <Text style={styles.nomeButtons}>{option}</Text>
+  </View>
+);
+
 const Dev = ({navigation})=>{
   return(
     <View>
@@ -46,16 +69,42 @@ const Dev = ({navigation})=>{
       <VideoDev/>
       <Text>{'\n'}</Text>
       <Button onPress = {()=>navigation.navigate(Login)} title = 'Tela de Login'/>
-      <Button onPress = {()=>navigation.navigate(Home)} title = 'Tela de Home'/>
+      <Button onPress = {()=>navigation.navigate(Home)} title = 'Tela de Menu Principal'/>
       <Button onPress = {()=>navigation.navigate(ADM)} title = 'Tela de ADM'/>
       <Button onPress = {()=>navigation.navigate(Prof)} title = 'Tela de Professor'/>
     </View>
   )}
 
-const Home = ()=>{return(<Text>Home</Text>)}
-const Prof = ()=>{return(<Text>Prof</Text>)}
+const Home = ({navigation})=>{
+  return(
+    <View style={styles.containerButtons}>
+    {optionsHome.map((item) => (
+      <CardOptions
+        key={item.id}
+        icon={item.icon}
+        option={item.option}
+      />
+    ))}
+    <Button onPress = {()=>navigation.navigate(Login)} title="Deslogar"/>
+    </View>
+  )}
+
+const Prof = ()=>{
+  return (
+    <View style={styles.containerButtons}>
+    {optionsProf.map((item) => (
+      <CardOptions
+        key={item.id}
+        icon={item.icon}
+        option={item.option}
+      />
+    ))}
+    </View>
+  )}
+
 const ADM = ()=>{return(<Text>ADM</Text>)}
-const Login = () => {
+
+const Login = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.logo} source={require('./assets/logo.png')} />
@@ -84,7 +133,7 @@ const Login = () => {
       <Text style={styles.hyperlink}>
         Esqueci minha senha/Cadastrar primeira senha
       </Text>
-      <Button title="Entrar">
+      <Button onPress = {()=>navigation.navigate(Home)} title="Entrar">
       </Button>
     </SafeAreaView>
   );
@@ -139,6 +188,14 @@ const styles = StyleSheet.create({
     width: 300,
     height: 150,
   },
+    containerButtons: { padding: 20 },
+    card: {
+    backgroundColor: '#f9f9f9',
+    padding: 15,
+    marginBottom: 10,
+    borderRadius: 8
+  },
+    nomeButtons: { fontSize: 16, fontWeight: 'bold', paddingTop: 12, },
 });
 
 const App = () => {
@@ -146,8 +203,16 @@ const App = () => {
       <NavigationContainer>		
         <Stack.Navigator>
           <Stack.Screen name="Dev" component={Dev} />
-          <Stack.Screen name="Login" component={Login}/>      	
-        </Stack.Navigator>    
+          <Stack.Screen name="Login" component={Login}/>
+          <Stack.Screen name="Home" component={()=>{return(				
+            <Drawer.Navigator>      					
+	            <Drawer.Screen name="Home" component={Home}/>
+              <Drawer.Screen name="ADM" component={ADM}/>
+              <Drawer.Screen name="Prof" component={Prof}/>
+            </Drawer.Navigator>)}} />
+          <Stack.Screen name="ADM" component={ADM}/>
+          <Stack.Screen name="Prof" component={Prof}/>			      	
+        </Stack.Navigator> 
       </NavigationContainer>)
   };
   
