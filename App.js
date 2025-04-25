@@ -52,6 +52,7 @@ const optionsHome = [
   { id: 3, icon:"send", option: "Enviar Trabalho"},
   { id: 4, icon:"settings", option: "Configurações", screen:"config"},
 ];
+// https://fonts.google.com/icons
 
 const CardOptions = ({ icon, option}) => (
   <View style={styles.card}>
