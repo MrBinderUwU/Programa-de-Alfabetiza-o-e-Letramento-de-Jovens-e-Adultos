@@ -1,5 +1,5 @@
-import { Text, SafeAreaView, StyleSheet, Image, TextInput, Button, View} from 'react-native';
-import { React, useEffect } from 'react';
+import { Text, SafeAreaView, StyleSheet, Image, TextInput, Button, View, TouchableOpacity, ScrollView} from 'react-native';
+import { React, useEffect,useState } from 'react';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from "@react-navigation/native";
@@ -54,11 +54,11 @@ const optionsHome = [
 ];
 // https://fonts.google.com/icons
 
-const CardOptions = ({ icon, option}) => (
-  <View style={styles.card}>
+const CardOptions = ({ icon, option, onPress}) => (
+  <TouchableOpacity style={styles.card} onPress={onPress}>
     <MaterialIcons name={icon} size={24}/>
     <Text style={styles.nomeButtons}>{option}</Text>
-  </View>
+  </TouchableOpacity>
 );
 
 const Dev = ({navigation})=>{
