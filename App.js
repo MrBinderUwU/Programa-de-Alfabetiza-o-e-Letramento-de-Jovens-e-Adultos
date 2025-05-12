@@ -1,5 +1,5 @@
-import { Text, SafeAreaView, StyleSheet, Image, TextInput, Button, View} from 'react-native';
-import { React, useEffect } from 'react';
+import { Text, SafeAreaView, StyleSheet, Image, TextInput, Button, View, TouchableOpacity, ScrollView} from 'react-native';
+import { React, useEffect,useState } from 'react';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from "@react-navigation/native";
@@ -47,18 +47,24 @@ const optionsProf = [
 ];
 
 const optionsHome = [
-  { id: 1, icon:"description", option: "Ver Conteúdo"},
+  { id: 1, icon:"description", option: "Ver Conteúdo",},
   { id: 2, icon:"calendar-month", option: "Ver Turma"},
   { id: 3, icon:"send", option: "Enviar Trabalho"},
   { id: 4, icon:"settings", option: "Configurações", screen:"config"},
 ];
+
+const optionsButton = [
+  { id: 1, icon:"abc", option: "Português"},
+  { id: 2, icon:"calculate", option: "Matemática"},
+  { id: 3, icon:"language", option: "Inglês"},
+];
 // https://fonts.google.com/icons
 
-const CardOptions = ({ icon, option}) => (
-  <View style={styles.card}>
+const CardOptions = ({ icon, option, onPress}) => (
+  <TouchableOpacity style={styles.card} onPress={onPress}>
     <MaterialIcons name={icon} size={24}/>
     <Text style={styles.nomeButtons}>{option}</Text>
-  </View>
+  </TouchableOpacity>
 );
 
 const Dev = ({navigation})=>{
@@ -77,17 +83,36 @@ const Dev = ({navigation})=>{
   )}
 
 const Home = ({navigation})=>{
+  const [showButtons, setShowButtons] = useState(false);
+
+  const toggleButtons = () => {
+    setShowButtons(!showButtons);
+  };
   return(
+    <ScrollView>
     <View style={styles.containerButtons}>
-    {optionsHome.map((item) => (
-      <CardOptions
-        key={item.id}
-        icon={item.icon}
-        option={item.option}
-      />
-    ))}
-    <Button onPress = {()=>navigation.navigate(Login)} title="Deslogar"/>
+      {optionsHome.map((item) => (
+        <CardOptions
+          key={item.id}
+          icon={item.icon}
+          option={item.option}
+          onPress={toggleButtons}
+        />
+      ))}
+      {showButtons && (
+        <View style={styles.containerButtons}>
+          {optionsButton.map((item) => (
+            <CardOptions
+            key={item.id}
+            icon={item.icon}
+            option={item.option}
+            />
+          ))}
+        </View>
+        )}
+      <Button onPress = {()=>navigation.navigate(Login)} title="Deslogar"/>
     </View>
+    </ScrollView>
   )}
 
 const Prof = ()=>{
