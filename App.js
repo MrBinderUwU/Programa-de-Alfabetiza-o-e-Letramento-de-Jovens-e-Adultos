@@ -73,6 +73,7 @@ const Dev = ({navigation})=>{
       <Button onPress = {()=>navigation.navigate(Home)} title = 'Tela de Menu Principal'/>
       <Button onPress = {()=>navigation.navigate(ADM)} title = 'Tela de ADM'/>
       <Button onPress = {()=>navigation.navigate(Prof)} title = 'Tela de Professor'/>
+      <Button onPress = {()=>navigation.navigate(LoginEmail)} title = 'Tela de Login por email'/>
     </View>
   )}
 
@@ -113,7 +114,7 @@ const Login = ({navigation}) => {
         PALJA - Programa de Alfabetização e Letramento de Jovens e Adultos{'\n'}{'\n'}
         {hour < 12 ? (<Text>Bom Dia!</Text>):( hour < 18 ? (<Text>Boa Tarde!</Text>):(<Text>Boa Noite!</Text>))}
       </Text >
-            <Button title="ENTRAR COM EMAIL" icon="">
+            <Button onPress = {()=>navigation.navigate(LoginEmail)} title="Entrar com Email">
       </Button>
       <Text style={styles.paragraph}>
       ----------------------- ou -----------------------
@@ -126,6 +127,33 @@ const Login = ({navigation}) => {
       <Text style={styles.hyperlink}>
         Não sei a matrícula
       </Text>
+      <Text style={styles.common_text}>
+        Senha
+      </Text>
+      <TextInput style={styles.input}>
+      </TextInput>
+      <Text style={styles.hyperlink}>
+        Esqueci minha senha/Cadastrar primeira senha
+      </Text>
+      <Button onPress = {()=>navigation.navigate(Home)} title="Entrar">
+      </Button>
+    </SafeAreaView>
+  );
+}
+
+const LoginEmail = ({navigation}) => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <Image style={styles.logo} source={require('./assets/logo.png')} />
+      <Text style={styles.paragraph}>
+        PALJA - Programa de Alfabetização e Letramento de Jovens e Adultos{'\n'}{'\n'}
+        {hour < 12 ? (<Text>Bom Dia!</Text>):( hour < 18 ? (<Text>Boa Tarde!</Text>):(<Text>Boa Noite!</Text>))}
+      </Text>
+      <Text style={styles.common_text}>
+        Email
+      </Text>
+      <TextInput style={[styles.input, { marginBottom: 20 }]}>
+      </TextInput>
       <Text style={styles.common_text}>
         Senha
       </Text>
@@ -169,7 +197,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor:"#000000",
     height: 38,
-    backgroundColor: "#e0f0ff"
+    backgroundColor: "#e0f0ff",
   },
     logo: {
     height: 100,
@@ -205,6 +233,7 @@ const App = () => {
         <Stack.Navigator>
           <Stack.Screen name="Dev" component={Dev} />
           <Stack.Screen name="Login" component={Login}/>
+          <Stack.Screen name="LoginEmail" component={LoginEmail}/>
           <Stack.Screen name="Home" component={()=>{return(				
             <Drawer.Navigator>      					
 	            <Drawer.Screen name="Home" component={Home}/>
